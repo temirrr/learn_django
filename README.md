@@ -10,9 +10,10 @@ Then run the following commands
 ```
 pip install -r requirements.txt
 cd learn_django
-python manage.py populate_data
 python manage.py runserver
 ```
+
+NOTE: you can run `python manage.py populate_data` before starting up server if there is no data displayed
 
 Open the browser at http://127.0.0.1:8000/devices
 
