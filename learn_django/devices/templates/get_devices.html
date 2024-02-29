@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Devices</title>
+</head>
+<body>
+    <h1>Search for devices</h1>
+    <form id="search-form" method="get" action="{% url 'get_devices' %}">
+        <label for="name">Device Name:</label><br>
+        <input type="text" id="name" name="name" placeholder="samsung, iphone, dell, etc"><br><br>
+        <label for="category">Category:</label><br>
+        <select id="category" name="category">
+            <option value="">Select category...</option>
+            <option value="phone">Phone</option>
+            <option value="monitor">Monitor</option>
+          </select><br><br>
+        <label for="tags">Tags (you can list them by using comma and select from expensive, cheap, us, korea):</label><br>
+        <input type="text" id="tags" name="tags" placeholder="expensive,us"><br><br>
+        <button type="submit">Search</button>
+    </form>
+
+    <script>
+    document.getElementById("search-form").addEventListener("submit", function(event) {
+        var form = event.target;
+        var formData = new FormData(form);
+    
+        // Remove empty values from formData
+        for (const [key, value] of formData.entries()) {
+        if (value === '') {
+            formData.delete(key);
+        }
+        }
+    
+        // Set updated formData to form before submitting
+        form.action = '{% url "get_devices" %}' + '?' + new URLSearchParams(formData).toString();
+    });
+    </script>
+
+    {% if devices %}
+    <h2>Search results:</h2>
+    <ul>
+        {% for device in devices %}
+        <li>{{ device.name }} - {{ device.category }} - Tags: 
+            {% for tag in device.tags.all %}
+                {{ tag }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>
